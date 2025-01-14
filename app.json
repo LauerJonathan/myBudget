@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "myBudget",
+    "slug": "myBudget",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/bdgIco.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.lauer.myBudget",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.lauer.myBudget"
+    }
+  }
+}

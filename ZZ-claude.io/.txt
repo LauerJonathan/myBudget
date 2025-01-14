@@ -1,0 +1,39 @@
+Projet: Application de gestion de budget personnel (React Native)
+
+Structure du projet:
+/myBudget/
+├── client/                     # Application React Native
+│   ├── src/
+│   │   ├── api/               # Services API et configuration
+│   │   ├── screens/           # Écrans de l'application
+│   │   │   └── DashboardScreen.tsx
+│   │   ├── components/        # Composants réutilisables
+│   │   │   └── AddRecurringModal.tsx
+│   │   ├── navigation/        # Configuration navigation
+│   │   │   └── AppNavigator.tsx
+│   │   ├── store/            # État global (à implémenter)
+│   │   ├── services/         # Services
+│   │   │   └── storageService.ts
+│   │   ├── utils/            # Fonctions utilitaires
+│   │   ├── constants/        # Constantes, thèmes
+│   │   │   └── theme.ts
+│   │   └── types/           # Types TypeScript
+│   ├── App.tsx
+│   └── package.json
+└── server/                   # Future API (à implémenter)
+
+Fonctionnalités implémentées:
+1. Dashboard avec solde actuel et prévisionnel
+2. Gestion des dépenses récurrentes
+3. Système de catégories avec icônes
+4. Stockage local avec AsyncStorage
+5. Menu latéral personnalisé
+
+Points spécifiques:
+- Le solde prévisionnel est calculé jusqu'à la fin du mois en cours
+- Les transactions récurrentes sont automatiquement ajoutées selon leur date
+- Interface avec 8 catégories prédéfinies (Logement, Factures, etc.)
+- Menu latéral s'ouvrant de la droite
+Pour reprendre le développement, il faudrait me dire :
+"Je développe une application de gestion de budget personnel en React Native. Voici le contexte actuel : [coller le texte ci-dessus]". Cela me permettra de comprendre rapidement l'état du projet et de continuer le développement de manière cohérente.
+Le code est disponible sur GitHub : https://github.com/LauerJonathan/budget
