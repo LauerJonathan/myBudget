@@ -1,39 +1,61 @@
-Projet: Application de gestion de budget personnel (React Native)
+Projet: Application de gestion de budget personnel (React Native Expo)
 
 Structure du projet:
 /myBudget/
-├── client/                     # Application React Native
-│   ├── src/
-│   │   ├── api/               # Services API et configuration
-│   │   ├── screens/           # Écrans de l'application
-│   │   │   └── DashboardScreen.tsx
-│   │   ├── components/        # Composants réutilisables
-│   │   │   └── AddRecurringModal.tsx
-│   │   ├── navigation/        # Configuration navigation
-│   │   │   └── AppNavigator.tsx
-│   │   ├── store/            # État global (à implémenter)
-│   │   ├── services/         # Services
-│   │   │   └── storageService.ts
-│   │   ├── utils/            # Fonctions utilitaires
-│   │   ├── constants/        # Constantes, thèmes
-│   │   │   └── theme.ts
-│   │   └── types/           # Types TypeScript
-│   ├── App.tsx
-│   └── package.json
-└── server/                   # Future API (à implémenter)
+├── src/                     # Application React Native
+│   ├── api/                # Services API et configuration
+│   ├── screens/           # Écrans de l'application
+│   │   └── DashboardScreen.tsx    # Dashboard avec nouveau menu flottant
+│   ├── components/        # Composants réutilisables
+│   │   ├── AddRecurringModal.tsx
+│   │   ├── AddExpenseModal.tsx   # Nouvelle modale
+│   │   ├── AddIncomeModal.tsx    # Nouvelle modale
+│   │   └── UpcomingDeadlines.tsx
+│   ├── navigation/        # Configuration navigation
+│   │   └── AppNavigator.tsx
+│   ├── store/            # État global (à implémenter)
+│   ├── services/         # Services
+│   │   └── storageService.ts    # Mis à jour avec nouvelles fonctions
+│   ├── utils/            # Fonctions utilitaires
+│   ├── constants/        # Constantes, thèmes
+│   │   └── theme.ts
+│   └── types/           # Types TypeScript
+│       └── storage.ts    # Interfaces pour les transactions
+├── assets/              # Images et ressources
+├── app.json            # Configuration mise à jour pour iOS
+├── App.tsx
+└── package.json
 
 Fonctionnalités implémentées:
-1. Dashboard avec solde actuel et prévisionnel
-2. Gestion des dépenses récurrentes
-3. Système de catégories avec icônes
-4. Stockage local avec AsyncStorage
-5. Menu latéral personnalisé
 
+Dashboard avec solde actuel et prévisionnel
+Gestion des dépenses récurrentes
+Gestion des dépenses ponctuelles
+Gestion des revenus
+Système de catégories avec icônes
+Stockage local avec AsyncStorage
+Menu latéral personnalisé
+Menu flottant avec overlay pour les actions
 Points spécifiques:
-- Le solde prévisionnel est calculé jusqu'à la fin du mois en cours
-- Les transactions récurrentes sont automatiquement ajoutées selon leur date
-- Interface avec 8 catégories prédéfinies (Logement, Factures, etc.)
-- Menu latéral s'ouvrant de la droite
-Pour reprendre le développement, il faudrait me dire :
-"Je développe une application de gestion de budget personnel en React Native. Voici le contexte actuel : [coller le texte ci-dessus]". Cela me permettra de comprendre rapidement l'état du projet et de continuer le développement de manière cohérente.
-Le code est disponible sur GitHub : https://github.com/LauerJonathan/budget
+
+Le solde prévisionnel est calculé jusqu'à la fin du mois en cours
+Les transactions récurrentes sont automatiquement ajoutées selon leur date
+Interface avec catégories prédéfinies selon le type de transaction
+Menu latéral s'ouvrant de la droite
+Menu flottant avec overlay et animations
+Build iOS configurée pour production
+Version build actuelle dans app.json:
+{
+"expo": {
+"name": "myBudget",
+"slug": "myBudget",
+"version": "1.0.0",
+"ios": {
+"bundleIdentifier": "com.lauer.myBudget",
+"buildNumber": "1"
+}
+}
+}
+
+Pour reprendre le développement, il faudra me dire : "Je développe une application de gestion de budget personnel en React Native. Voici le contexte actuel : [coller le texte ci-dessus]". Cela permettra de rapidement comprendre l'état du projet et de continuer le développement de manière cohérente.
+

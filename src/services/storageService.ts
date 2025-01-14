@@ -136,11 +136,24 @@ class StorageService {
 
         switch (transaction.frequency) {
           case "monthly":
-            shouldProcess =
-              today.getDate() === transaction.dayOfMonth &&
-              (!lastProcessed ||
-                lastProcessed.getMonth() !== today.getMonth() ||
-                lastProcessed.getFullYear() !== today.getFullYear());
+            // Vérifie si c'est un nouveau paiement récurrent
+            const isNewRecurring = !lastProcessed;
+
+            // Pour les nouveaux paiements récurrents
+            if (isNewRecurring) {
+              // Si la date du jour est supérieure à la date programmée,
+              // on traite immédiatement pour le mois en cours
+              if (today.getDate() >= transaction.dayOfMonth) {
+                shouldProcess = true;
+              }
+            } else {
+              // Pour les paiements récurrents existants
+              shouldProcess =
+                today.getDate() === transaction.dayOfMonth &&
+                (!lastProcessed ||
+                  lastProcessed.getMonth() !== today.getMonth() ||
+                  lastProcessed.getFullYear() !== today.getFullYear());
+            }
             break;
         }
 

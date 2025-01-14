@@ -1,4 +1,3 @@
-// src/screens/DashboardScreen.tsx
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -29,7 +28,15 @@ interface DashboardData {
   previsionalBalance: number;
 }
 
-const DashboardScreen: React.FC = () => {
+interface DashboardScreenProps {
+  route: {
+    params?: {
+      refresh?: number;
+    };
+  };
+}
+
+const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -147,68 +154,80 @@ const DashboardScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    const initialize = async () => {
-      await loadDashboardData();
-      setIsLoading(false);
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        await loadDashboardData();
+      } catch (error) {
+        console.error("Error reloading dashboard data:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-    initialize();
-  }, []);
+
+    loadData();
+  }, [route.params?.refresh]);
 
   const onRefresh = async () => {
     setIsRefreshing(true);
     await loadDashboardData();
     setIsRefreshing(false);
   };
+
   const renderFloatingButtons = () => {
     if (!isMenuOpen) {
       return (
-        <>
-          <TouchableOpacity
-            style={styles.fab}
-            onPress={() => setIsMenuOpen(true)}>
-            <Ionicons name="add" size={24} color="#fff" />
-          </TouchableOpacity>
-        </>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={() => setIsMenuOpen(true)}>
+          <Ionicons name="add" size={24} color="#fff" />
+        </TouchableOpacity>
       );
     }
 
     return (
       <View style={styles.fabContainer}>
-        <TouchableOpacity
-          style={[styles.fabSecondary, styles.fabExpense]}
-          onPress={() => {
-            setIsMenuOpen(false);
-            setIsExpenseModalVisible(true);
-          }}>
-          <Ionicons name="remove-circle" size={24} color="#fff" />
-          <Text style={styles.fabLabel} numberOfLines={1}>
-            Dépense
-          </Text>
-        </TouchableOpacity>
+        <View style={[styles.fabSecondary, styles.fabExpense]}>
+          <TouchableOpacity
+            style={styles.fabButton}
+            onPress={() => {
+              setIsMenuOpen(false);
+              setIsExpenseModalVisible(true);
+            }}>
+            <Ionicons name="remove-circle" size={24} color="#fff" />
+          </TouchableOpacity>
+          <View style={styles.fabLabelContainer}>
+            <Text style={styles.fabLabelText}>Dépense</Text>
+          </View>
+        </View>
 
-        <TouchableOpacity
-          style={[styles.fabSecondary, styles.fabIncome]}
-          onPress={() => {
-            setIsMenuOpen(false);
-            setIsIncomeModalVisible(true);
-          }}>
-          <Ionicons name="add-circle" size={24} color="#fff" />
-          <Text style={styles.fabLabel} numberOfLines={1}>
-            Revenu
-          </Text>
-        </TouchableOpacity>
+        <View style={[styles.fabSecondary, styles.fabIncome]}>
+          <TouchableOpacity
+            style={styles.fabButton}
+            onPress={() => {
+              setIsMenuOpen(false);
+              setIsIncomeModalVisible(true);
+            }}>
+            <Ionicons name="add-circle" size={24} color="#fff" />
+          </TouchableOpacity>
+          <View style={styles.fabLabelContainer}>
+            <Text style={styles.fabLabelText}>Revenu</Text>
+          </View>
+        </View>
 
-        <TouchableOpacity
-          style={[styles.fabSecondary, styles.fabRecurring]}
-          onPress={() => {
-            setIsMenuOpen(false);
-            setIsModalVisible(true);
-          }}>
-          <Ionicons name="repeat" size={24} color="#fff" />
-          <Text style={styles.fabLabel} numberOfLines={1}>
-            Récurrent
-          </Text>
-        </TouchableOpacity>
+        <View style={[styles.fabSecondary, styles.fabRecurring]}>
+          <TouchableOpacity
+            style={styles.fabButton}
+            onPress={() => {
+              setIsMenuOpen(false);
+              setIsModalVisible(true);
+            }}>
+            <Ionicons name="repeat" size={24} color="#fff" />
+          </TouchableOpacity>
+          <View style={styles.fabLabelContainer}>
+            <Text style={styles.fabLabelText}>Récurrent</Text>
+          </View>
+        </View>
 
         <TouchableOpacity
           style={[styles.fab, styles.fabClose]}
@@ -226,7 +245,6 @@ const DashboardScreen: React.FC = () => {
       </View>
     );
   }
-
   return (
     <View style={styles.mainContainer}>
       {isMenuOpen && (
@@ -306,8 +324,15 @@ const DashboardScreen: React.FC = () => {
           {dashboardData.recentTransactions.length === 0 ? (
             <Text style={styles.noDataText}>Aucune transaction récente</Text>
           ) : (
-            dashboardData.recentTransactions.map((transaction) => (
-              <View key={transaction.id} style={styles.transactionItem}>
+            dashboardData.recentTransactions.map((transaction, index) => (
+              <View
+                key={transaction.id}
+                style={[
+                  styles.transactionItem,
+                  // N'ajoute le style de bordure que si ce n'est pas le dernier élément
+                  index !== dashboardData.recentTransactions.length - 1 &&
+                    styles.transactionItemBorder,
+                ]}>
                 <View style={styles.transactionInfo}>
                   <Text style={styles.transactionDescription}>
                     {transaction.description}
@@ -333,9 +358,7 @@ const DashboardScreen: React.FC = () => {
           )}
         </View>
       </ScrollView>
-
-      {renderFloatingButtons()}
-
+      {renderFloatingButtons()}{" "}
       <AddRecurringModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
@@ -433,6 +456,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 16,
     margin: 16,
+    marginBottom: 0,
     borderRadius: 12,
     elevation: 2,
     shadowColor: "#000",
@@ -451,6 +475,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 12,
+  },
+  transactionItemBorder: {
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
@@ -506,19 +532,23 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   fabSecondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    position: "relative",
+  },
+  fabButton: {
     width: 56,
     height: 56,
     borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
     elevation: 8,
     zIndex: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    position: "relative", // Ajouté pour le positionnement du label
   },
   fabExpense: {
     backgroundColor: "#e74c3c",
@@ -529,22 +559,41 @@ const styles = StyleSheet.create({
   fabRecurring: {
     backgroundColor: "#f39c12",
   },
-  fabClose: {
-    display: "none",
+  fabLabelContainer: {
+    position: "absolute",
+    right: 64,
+    backgroundColor: "#fff",
+    borderRadius: 28,
+    height: 56,
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    elevation: 4,
+    zIndex: 3,
+    minWidth: 150,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  fabLabelText: {
+    fontSize: 14,
+    color: "#333",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   fabLabel: {
     position: "absolute",
-    right: 64, // Pour que le label soit légèrement masqué par le bouton
-    height: 56, // Même hauteur que le bouton
+    right: 64,
+    height: 56,
     backgroundColor: "#fff",
-    borderRadius: 28, // Même que le bouton pour un look cohérent
+    borderRadius: 28,
     fontSize: 14,
     color: "#333",
     elevation: 4,
     zIndex: 3,
-    justifyContent: "center", // Pour centrer le texte verticalement
+    justifyContent: "center",
     alignItems: "center",
-    minWidth: 150, // Pour avoir une largeur suffisante
+    minWidth: 150,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
