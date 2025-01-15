@@ -13,6 +13,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import DashboardScreen from "../screens/DashboardScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import StatsScreen from "../screens/StatsScreen";
+import TransactionsScreen from "../screens/TransactionsScreen";
 import { COLORS } from "../constants/theme";
 
 const Stack = createNativeStackNavigator();
@@ -166,7 +168,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen
           name="Transactions"
-          component={PlaceholderScreen}
+          component={TransactionsScreen}
           options={{
             title: "Transactions",
             headerStyle: {
@@ -177,7 +179,7 @@ const AppNavigator = () => {
         />
         <Stack.Screen
           name="Statistics"
-          component={PlaceholderScreen}
+          component={StatsScreen}
           options={{
             title: "Statistiques",
             headerStyle: {

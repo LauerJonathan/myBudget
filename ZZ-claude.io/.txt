@@ -5,17 +5,18 @@ Structure du projet:
 ├── src/                     # Application React Native
 │   ├── api/                # Services API et configuration
 │   ├── screens/           # Écrans de l'application
-│   │   └── DashboardScreen.tsx    # Dashboard avec nouveau menu flottant
+│   │   ├── DashboardScreen.tsx    # Dashboard avec nouveau menu flottant
+│   │   └── SettingsScreen.tsx     # Écran de paramètres avec réinitialisation
 │   ├── components/        # Composants réutilisables
 │   │   ├── AddRecurringModal.tsx
-│   │   ├── AddExpenseModal.tsx   # Nouvelle modale
-│   │   ├── AddIncomeModal.tsx    # Nouvelle modale
+│   │   ├── AddExpenseModal.tsx
+│   │   ├── AddIncomeModal.tsx
 │   │   └── UpcomingDeadlines.tsx
 │   ├── navigation/        # Configuration navigation
 │   │   └── AppNavigator.tsx
 │   ├── store/            # État global (à implémenter)
 │   ├── services/         # Services
-│   │   └── storageService.ts    # Mis à jour avec nouvelles fonctions
+│   │   └── storageService.ts    # Mis à jour avec fonctions de réinitialisation
 │   ├── utils/            # Fonctions utilitaires
 │   ├── constants/        # Constantes, thèmes
 │   │   └── theme.ts
@@ -27,35 +28,42 @@ Structure du projet:
 └── package.json
 
 Fonctionnalités implémentées:
+- Dashboard avec solde actuel et prévisionnel
+- Gestion des dépenses récurrentes
+- Gestion des dépenses ponctuelles
+- Gestion des revenus
+- Système de catégories avec icônes
+- Stockage local avec AsyncStorage
+- Menu latéral personnalisé
+- Menu flottant avec overlay pour les actions
+- Écran de paramètres avec options de réinitialisation :
+  - Réinitialisation complète
+  - Réinitialisation des dépenses ponctuelles
+  - Réinitialisation des dépenses récurrentes
+  - Réinitialisation des revenus
 
-Dashboard avec solde actuel et prévisionnel
-Gestion des dépenses récurrentes
-Gestion des dépenses ponctuelles
-Gestion des revenus
-Système de catégories avec icônes
-Stockage local avec AsyncStorage
-Menu latéral personnalisé
-Menu flottant avec overlay pour les actions
 Points spécifiques:
+- Le solde prévisionnel est calculé jusqu'à la fin du mois en cours
+- Les transactions récurrentes sont automatiquement ajoutées selon leur date
+- Interface avec catégories prédéfinies selon le type de transaction
+- Menu latéral s'ouvrant de la droite
+- Menu flottant avec overlay et animations
+- Build iOS configurée pour production
+- Ajout immédiat des paiements récurrents si la date est déjà passée
 
-Le solde prévisionnel est calculé jusqu'à la fin du mois en cours
-Les transactions récurrentes sont automatiquement ajoutées selon leur date
-Interface avec catégories prédéfinies selon le type de transaction
-Menu latéral s'ouvrant de la droite
-Menu flottant avec overlay et animations
-Build iOS configurée pour production
 Version build actuelle dans app.json:
 {
-"expo": {
-"name": "myBudget",
-"slug": "myBudget",
-"version": "1.0.0",
-"ios": {
-"bundleIdentifier": "com.lauer.myBudget",
-"buildNumber": "1"
+  "expo": {
+    "name": "myBudget",
+    "slug": "myBudget",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.lauer.myBudget",
+      "buildNumber": "1"
+    }
+  }
 }
-}
-}
+
+
 
 Pour reprendre le développement, il faudra me dire : "Je développe une application de gestion de budget personnel en React Native. Voici le contexte actuel : [coller le texte ci-dessus]". Cela permettra de rapidement comprendre l'état du projet et de continuer le développement de manière cohérente.
-

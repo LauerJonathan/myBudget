@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
@@ -187,44 +188,44 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
 
     return (
       <View style={styles.fabContainer}>
-        <View style={[styles.fabSecondary, styles.fabExpense]}>
+        <View style={styles.fabWrapper}>
           <TouchableOpacity
-            style={styles.fabButton}
+            style={[styles.fabIconWrapper, styles.fabExpense]}
             onPress={() => {
               setIsMenuOpen(false);
               setIsExpenseModalVisible(true);
             }}>
             <Ionicons name="remove-circle" size={24} color="#fff" />
           </TouchableOpacity>
-          <View style={styles.fabLabelContainer}>
+          <View style={styles.fabLabel}>
             <Text style={styles.fabLabelText}>Dépense</Text>
           </View>
         </View>
 
-        <View style={[styles.fabSecondary, styles.fabIncome]}>
+        <View style={styles.fabWrapper}>
           <TouchableOpacity
-            style={styles.fabButton}
+            style={[styles.fabIconWrapper, styles.fabIncome]}
             onPress={() => {
               setIsMenuOpen(false);
               setIsIncomeModalVisible(true);
             }}>
             <Ionicons name="add-circle" size={24} color="#fff" />
           </TouchableOpacity>
-          <View style={styles.fabLabelContainer}>
+          <View style={styles.fabLabel}>
             <Text style={styles.fabLabelText}>Revenu</Text>
           </View>
         </View>
 
-        <View style={[styles.fabSecondary, styles.fabRecurring]}>
+        <View style={styles.fabWrapper}>
           <TouchableOpacity
-            style={styles.fabButton}
+            style={[styles.fabIconWrapper, styles.fabRecurring]}
             onPress={() => {
               setIsMenuOpen(false);
               setIsModalVisible(true);
             }}>
             <Ionicons name="repeat" size={24} color="#fff" />
           </TouchableOpacity>
-          <View style={styles.fabLabelContainer}>
+          <View style={styles.fabLabel}>
             <Text style={styles.fabLabelText}>Récurrent</Text>
           </View>
         </View>
@@ -249,7 +250,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
     <View style={styles.mainContainer}>
       {isMenuOpen && (
         <>
-          <BlurView style={styles.overlay} intensity={20} tint="dark" />
+          {Platform.OS === "ios" ? (
+            <BlurView style={styles.overlay} intensity={20} tint="dark" />
+          ) : (
+            <View style={styles.overlay} />
+          )}
           <TouchableOpacity
             style={styles.overlay}
             activeOpacity={1}
@@ -358,7 +363,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ route }) => {
           )}
         </View>
       </ScrollView>
-      {renderFloatingButtons()}{" "}
+      {renderFloatingButtons()}
       <AddRecurringModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
@@ -398,7 +403,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
-    zIndex: 1,
+    zIndex: 2,
   },
   balanceContainer: {
     flexDirection: "row",
@@ -512,13 +517,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 20,
     bottom: 20,
+    alignItems: "flex-end",
+  },
+  fabWrapper: {
+    flexDirection: "row",
     alignItems: "center",
-    zIndex: 2,
+    marginBottom: 16,
+    zIndex: 3,
   },
   fab: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
     backgroundColor: COLORS.primary,
     width: 56,
     height: 56,
@@ -526,29 +533,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     elevation: 4,
+    zIndex: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+    position: "absolute",
+    bottom: 20,
+    right: 29,
   },
-  fabSecondary: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-    position: "relative",
-  },
-  fabButton: {
+  fabIconWrapper: {
     width: 56,
     height: 56,
     borderRadius: 28,
     justifyContent: "center",
     alignItems: "center",
     elevation: 8,
-    zIndex: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+    zIndex: 3,
   },
   fabExpense: {
     backgroundColor: "#e74c3c",
@@ -559,46 +564,27 @@ const styles = StyleSheet.create({
   fabRecurring: {
     backgroundColor: "#f39c12",
   },
-  fabLabelContainer: {
-    position: "absolute",
-    right: 64,
-    backgroundColor: "#fff",
-    borderRadius: 28,
-    height: 56,
-    justifyContent: "center",
-    paddingHorizontal: 16,
-    elevation: 4,
-    zIndex: 3,
-    minWidth: 150,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  fabLabelText: {
-    fontSize: 14,
-    color: "#333",
-    fontWeight: "bold",
-    textAlign: "center",
+  fabClose: {
+    marginTop: 8,
   },
   fabLabel: {
     position: "absolute",
     right: 64,
-    height: 56,
     backgroundColor: "#fff",
     borderRadius: 28,
-    fontSize: 14,
-    color: "#333",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     elevation: 4,
     zIndex: 3,
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: 150,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
-    lineHeight: 54,
+    minWidth: 100,
+  },
+  fabLabelText: {
+    fontSize: 14,
+    color: "#333",
     fontWeight: "bold",
     textAlign: "center",
   },
